@@ -1,0 +1,14 @@
+{
+  "name": "simplad",
+  "version": "0.0.0",
+  "description": "implementation of several monads for use with composad",
+  "main": "simplad.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "monad"
+  ],
+  "author": "cogmob <luke.avery@live.co.uk> (http://www.cogmob.com)",
+  "license": "MIT"
+}
