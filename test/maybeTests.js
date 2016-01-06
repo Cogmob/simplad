@@ -1,10 +1,11 @@
 if (true) {
-    var maybe = require('../simplad').maybe;
-    var unit = maybe.unit;
-    var bind = maybe.bind;
-    var box = maybe.box;
-    var lift = maybe.lift;
-    var isFalse = maybe.lift;
+    var s = require('../simplad');
+    var maybe = s.maybe;
+    var maybeLayer = maybe.makeLayer();
+    var unit = maybeLayer.unit;
+    var bind = maybeLayer.bind;
+
+    var isFalse = maybe.isFalse;
 
     var expect = require('chai').expect;
 
@@ -12,7 +13,7 @@ if (true) {
     var pipe = ramda.pipe;
 
     function double(i) { return 2*i; }
-    function noValue(i) { return [false,i]; }
+    function noValue(i) { return [false]; }
     function print(i) { console.log(JSON.stringify(i)); return i; }
     function echo(i) {return function() {return i;}}
 
@@ -24,13 +25,16 @@ if (true) {
     }
 }
 
-describe('unit', function() {
-    it('should bind a single function', function() {
+describe('maybe', function() {
+    it.only('should bind a single function', function() {
         var obj = {};
         pipe(
                 echo(3),
                 unit,
-                bind(lift(double)),
+                bind(function(i) {
+                    return [double, [true], {}];
+                }),
+                print,
                 bind(lift(set(obj, 'res')))
             )();
         expect(obj.res).to.equal(6);
@@ -61,15 +65,5 @@ describe('unit', function() {
                 bind(lift(set(obj, 'res')))
             )();
         expect(obj.res).to.equal(6);
-    });
-
-    it('should correctly box with a default value', function() {
-        var boxed = box([true], 'value');
-        expect(boxed).to.deep.equal([true,'value']);
-    });
-
-    it('should correctly box when there is no value', function() {
-        var boxed = box(maybe.noValue, 'value');
-        expect(boxed).to.deep.equal([false, 'value']);
     });
 });

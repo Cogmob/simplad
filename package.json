@@ -19,5 +19,8 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/Cogmob/simplad.git"
+  },
+  "dependencies": {
+    "shallow-copy": "0.0.1"
   }
 }
